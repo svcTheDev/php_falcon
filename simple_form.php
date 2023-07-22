@@ -1,6 +1,6 @@
 <?php 
   if (isset($_POST['submit'])) {
-      $name = $_POST['nombre'];
+      $name = $_POST['name'];
       $correo = $_POST['correo'];
     if (!empty($name)) {
         $name = trim($name); // Quita espacios al principio y al final
