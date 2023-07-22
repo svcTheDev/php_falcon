@@ -1,17 +1,30 @@
 <?php 
   if (isset($_POST['submit'])) {
       $name = $_POST['name'];
-      $correo = $_POST['correo'];
+      $email = $_POST['email'];
+      $errors = '';
     if (!empty($name)) {
         $name = trim($name); // Quita espacios al principio y al final
         $name = htmlspecialchars($name); // quita cualquier caracter especial
         $name = stripslashes($name); // quita simbolos
 
 
+        // El contenido de la variable se filtra cualquier signo para que solo sea una cadena de texto
         $name = filter_var($name, FILTER_SANITIZE_STRING);
         echo "tu nombre es: $name <br />";
-    } 
+    } else {
+        $errors .= 'Por favor agrega un nombre';
+    }
+
+    if (!empty ($email)) {
+
+        echo "Tu correo es $email";
+    } else {
+        $errors .= 'Por favor agrega un correo';
+    }
   }
+
+
   
   ?> 
 
@@ -29,6 +42,18 @@
         <br>
         <br>
         <input type="email" name="email" placeholder='Correo'>
+
+        <?php 
+            if(!empty($errors)):
+                ?>
+            <div class="error">
+                <?php echo $errors;?> 
+            </div>
+        <?php 
+            endif;
+        ?>
+
+
         <br>
         <br>
         <input type="submit" name="submit">

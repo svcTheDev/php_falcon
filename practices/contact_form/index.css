@@ -1,0 +1,26 @@
+h1 {
+    color: red;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+main {
+    width: 40%;
+    margin: 0 auto;
+    border: .2px solid;
+    padding: 1rem;
+}
+
+.wrap_container {
+    display: flex;
+    flex-direction: column;
+}
+
+input, textarea {
+    margin: .2rem 0;
+}
+
+
+
