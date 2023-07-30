@@ -7,7 +7,7 @@ body {
 }
 
 main {
-    width: 40%;
+    width: 20rem;
     margin: 0 auto;
     border: .2px solid;
     padding: 1rem;
@@ -18,9 +18,18 @@ main {
     flex-direction: column;
 }
 
-input, textarea {
+input  {
+    padding: 1rem 0;
     margin: .2rem 0;
 }
 
+textarea {
+    margin: .2rem 0;
+}
+
+.alert {
+    background-color: red;
+    color: white;
+}
 
 
