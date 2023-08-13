@@ -20,18 +20,30 @@
         if (empty($name)) {
           echo "Name is empty";
         } else {
-          echo $name . 'hola';
+          // echo 'Name okay';
         }
       }
+      $statement = $conn->prepare("SELECT username FROM users WHERE username = :name");
+      $statement->execute(array(':name' => $name));
 
-      $results = $conn->prepare("SELECT username FROM users WHERE username='$name'");
-      $results->execute();
+      $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
 
-      $result = $results->setFetchMode(PDO::FETCH_ASSOC);
-    
-      foreach($results->fetchAll() as $k=>$v) {
-        var_dump($v);
-  }
+      $rowCount = $statement->rowCount();
+
+      if ($rowCount > 0) {
+          echo 'user exist';
+      } else {
+          echo "User doesn't exist";
+      }
+
+      //     foreach($statement->fetchAll() as $k=>$v) {
+  //       var_dump($v);
+  //       // if(!empty($v['username'])) {
+  //       //   echo $v['username'];
+  //       // } else {
+  //       //   echo $v['id'];
+  //       // }
+  // }
 ?>
 
 <!DOCTYPE html>
