@@ -98,6 +98,8 @@
   }
   
   .lf--forgot {
+    outline: none;
+    position: relative;
     margin-top: 1em;
     color: #00d6b7;
     font-size: 0.65em;

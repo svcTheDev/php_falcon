@@ -1,20 +1,75 @@
+<?php
+
+session_start();
+
+// session_destroy();
+require_once('../db_connection.php');
+
+// $host = 'localhost';
+// $db_name = 'user_managment';
+// $username = 'root';
+// $password = '';
+
+// try {
+//     $conn = new PDO("mysql:host=$host;dbname=$db_name; port=3307", $username, '');
+//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch (PDOException $e) {
+//     echo "Connection failed: " . $e->getMessage();
+// }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // collect value of input field
+    $new_name = $_POST['new_name'];
+    $new_pass = $_POST['new_pass'];
+    $repeated_pass = $_POST['repeated_pass'];
+
+    if (empty($new_name) or empty($new_pass) or empty($repeated_pass)) {
+
+        echo "Field is empty";
+    } else {
+        $new_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
+        $statement = $conn->prepare("SELECT username FROM users WHERE (username, password) = (:name, :password)");
+        $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $statement->execute(array(':name' => $new_name, ':password' => $new_pass));
+
+        $rowCount = $statement->rowCount();
+
+        if ($rowCount > 0) {
+            echo 'user exist';
+        } else {
+            echo "User creted";
+            $statement = $conn->prepare("INSERT INTO users (id, username, password)  VALUES (null, :name, :password)");
+            $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
+            $statement->execute(array(':name' => $new_name, ':password' => $new_pass));
+
+            header("Location: login.php");
+            exit();
+
+        }
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
 
-<form class='login-form'>
+        <h1 class="text-white text-center mt-3">
+           Regístrate 😎
+        </h1>
+<form class='login-form' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
   <div class="flex-row">
     <label class="lf--label" for="username">
       <svg x="0px" y="0px" width="12px" height="13px">
         <path fill="#B1B7C4" d="M8.9,7.2C9,6.9,9,6.7,9,6.5v-4C9,1.1,7.9,0,6.5,0h-1C4.1,0,3,1.1,3,2.5v4c0,0.2,0,0.4,0.1,0.7 C1.3,7.8,0,9.5,0,11.5V13h12v-1.5C12,9.5,10.7,7.8,8.9,7.2z M4,2.5C4,1.7,4.7,1,5.5,1h1C7.3,1,8,1.7,8,2.5v4c0,0.2,0,0.4-0.1,0.6 l0.1,0L7.9,7.3C7.6,7.8,7.1,8.2,6.5,8.2h-1c-0.6,0-1.1-0.4-1.4-0.9L4.1,7.1l0.1,0C4,6.9,4,6.7,4,6.5V2.5z M11,12H1v-0.5 c0-1.6,1-2.9,2.4-3.4c0.5,0.7,1.2,1.1,2.1,1.1h1c0.8,0,1.6-0.4,2.1-1.1C10,8.5,11,9.9,11,11.5V12z"/>
       </svg>
     </label>
-    <input id="username" class='lf--input' placeholder='Nombre de usuario' type='text'>
+    <input id="username" class='lf--input' placeholder='Nombre de usuario' type='text' name="new_name">
   </div>
   <div class="flex-row">
     <label class="lf--label" for="password">
@@ -24,7 +79,7 @@
         </g>
       </svg>
     </label>
-    <input id="password" class='lf--input' placeholder='Constraseña' type='password'>
+    <input id="password" class='lf--input' placeholder='Constraseña' type='password' name="new_pass">
   </div>
   <div class="flex-row">
     <label class="lf--label" for="repeat-password">
@@ -34,9 +89,9 @@
         </g>
       </svg>
     </label>
-    <input id="password" class='lf--input' placeholder='Repetir contraseña' type='password'>
+    <input id="password" class='lf--input' placeholder='Repetir contraseña' type='password' name="repeated_pass">
   </div>
-  <input class='lf--submit' type='submit' value='INICIAR SESIÓN'>
+  <input class='lf--submit' type='submit' value='REGÍSTRATE'>
 </form>
 <p class="text-white text-center mt-3">
            ¿Ya tienes una cuenta?

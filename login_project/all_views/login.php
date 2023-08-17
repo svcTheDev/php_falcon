@@ -1,49 +1,56 @@
-<?php 
+<?php
 
-    // require_once('../db_connection.php');
+session_start();
 
-    $host = 'localhost';
-    $db_name = 'user_managment';
-    $username = 'root';
-    $password = '';
+// session_destroy();
+require_once('../db_connection.php');
 
-    try {
-        $conn = new PDO("mysql:host=$host;dbname=$db_name; port=3307", $username, $password);
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
-    }
+// $host = 'localhost';
+// $db_name = 'user_managment';
+// $username = 'root';
+// $password = '';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // collect value of input field
-        $name = $_POST['username'];
-        if (empty($name)) {
-          echo "Name is empty";
-        } else {
-          // echo 'Name okay';
-        }
-      }
-      $statement = $conn->prepare("SELECT username FROM users WHERE username = :name");
+// try {
+//     $conn = new PDO("mysql:host=$host;dbname=$db_name; port=3307", $username, '');
+//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// } catch (PDOException $e) {
+//     echo "Connection failed: " . $e->getMessage();
+// }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // collect value of input field
+    $name = $_POST['username'];
+    $pass = $_POST['password'];
+    $_SESSION['username'] = $name;
+    $_SESSION['password'] = $pass;
+
+
+
+    if (empty($name) or empty($pass)) {
+        echo "Field is empty";
+    } else {
+      $statement = $conn->prepare("SELECT password FROM users WHERE username = :name");
       $statement->execute(array(':name' => $name));
+      $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-      $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
+        $rowCount = $statement->rowCount();
 
-      $rowCount = $statement->rowCount();
+        if ($rowCount > 0) {
+          // Validando el password
+        $storedPassword = $result['password'];
 
-      if ($rowCount > 0) {
-          echo 'user exist';
+        if (password_verify($pass, $storedPassword)) {
+          header("Location: ../content.php");
+          exit();
+        
+        } else {
+          echo 'password incorrecto';
+        }
       } else {
-          echo "User doesn't exist";
+        echo 'usuario incorrecto';
       }
-
-      //     foreach($statement->fetchAll() as $k=>$v) {
-  //       var_dump($v);
-  //       // if(!empty($v['username'])) {
-  //       //   echo $v['username'];
-  //       // } else {
-  //       //   echo $v['id'];
-  //       // }
-  // }
+    }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +61,10 @@
     <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
-
-<form class='login-form' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="POST">
+<h1 class="text-white text-center mt-3">
+           Inicia sesión 🙂
+</h1>
+<form class='login-form' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
   <div class="flex-row">
     <label class="lf--label" for="username">
       <svg x="0px" y="0px" width="12px" height="13px">
