@@ -30,7 +30,6 @@ echo $_SESSION['username'] . '👌';
         <section class="container todolist">
             <h1 class="text-center m-3">To-do-list</h1>
                 <?php 
-                echo 'hola?';
                   if(!empty($error)) {
                     echo "<p class='bg-danger text-white'>$error</p>";
                   }

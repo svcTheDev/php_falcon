@@ -2,20 +2,7 @@
 
 session_start();
 
-// session_destroy();
 require_once '../db_connection.php';
-
-// $host = 'localhost';
-// $db_name = 'user_managment';
-// $username = 'root';
-// $password = '';
-
-// try {
-//     $conn = new PDO("mysql:host=$host;dbname=$db_name; port=3307", $username, '');
-//     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// } catch (PDOException $e) {
-//     echo "Connection failed: " . $e->getMessage();
-// }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // collect value of input field
