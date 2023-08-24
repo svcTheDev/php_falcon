@@ -1,6 +1,10 @@
 <?php
 
 session_start();
+require_once('db_connection.php');
+
+require_once('all_views/task_managment.php'); 
+
 
 ?>
 
@@ -25,12 +29,19 @@ echo $_SESSION['username'] . '👌';
 
         <section class="container todolist">
             <h1 class="text-center m-3">To-do-list</h1>
-                   <form class="text-center">
-                <input type="text" name="task" id="task" placeholder="Escribe tu tarea" class="p-2">
-                <input type="date" name="date" id="date" placeholder="Selecciona una fecha" class="p-2">
-                <input type="button" value="GUARDAR" class="tl--save p-2">
-                <input type="button" value="VER TAREAS" class="p-2">
-                   </form>
+                <?php 
+                echo 'hola?';
+                  if(!empty($error)) {
+                    echo "<p class='bg-danger text-white'>$error</p>";
+                  }
+                ?>
+                <!--  echo htmlspecialchars($_SERVER['PHP_SELF']); -->
+                <form class='login-form' action="content.php" method="POST" class="text-center">
+                    <input type="text" name="task" id="task" placeholder="Escribe tu tarea" class="p-2">
+                    <input type="date" name="date" id="date" placeholder="Selecciona una fecha" class="p-2">
+                    <input type="submit" name="save_submit" value="GUARDAR" class="tl--save p-2">
+                    <!-- <input type="submit" name="view_submit" value="VER TAREAS" class="p-2"> -->
+                </form>
 
         <div class="table-wrapper m-3">
             <table class="table table-hover table-bordered m-4">

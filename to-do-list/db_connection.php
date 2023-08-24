@@ -4,10 +4,14 @@ $db_name = 'to-do-list';
 $username = 'root';
 $password = '';
 
-try {
-    $conn = new PDO("mysql:host=$host;dbname=$db_name; port=3307", $username, '');
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
+$conn = mysqli_connect($host, $username, $password, $db_name, '3307');
+
+// Check connection
+if (mysqli_connect_errno()) {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  exit();
 }
+
+  
+
 ?>

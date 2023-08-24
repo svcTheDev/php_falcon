@@ -3,7 +3,7 @@
 session_start();
 
 // session_destroy();
-require_once('../db_connection.php');
+require_once '../db_connection.php';
 
 // $host = 'localhost';
 // $db_name = 'user_managment';
@@ -24,33 +24,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['username'] = $name;
     $_SESSION['password'] = $pass;
 
-
-
     if (empty($name) or empty($pass)) {
         echo "Field is empty";
     } else {
-      $statement = $conn->prepare("SELECT password FROM users WHERE username = :name");
-      $statement->execute(array(':name' => $name));
-      $result = $statement->fetch(PDO::FETCH_ASSOC);
+        $statement = $conn->prepare("SELECT password FROM users WHERE username = ?");
+        $statement->bind_param('s', $name);
+        $statement->execute();
+        // $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $rowCount = $statement->rowCount();
+        $result = $statement->get_result();
 
-        if ($rowCount > 0) {
-          // Validando el password
-        $storedPassword = $result['password'];
+        if ($conn->affected_rows >= 0) {
+            // Validando el password
 
-        if (password_verify($pass, $storedPassword)) {
-          header("Location: ../content.php");
-          exit();
-        
+            $row = $result->FETCH_ASSOC();
+            $storedPassword = $row['password'];
+
+            if (password_verify($pass, $storedPassword)) {
+                header("Location: ../content.php");
+                exit();
+
+            } else {
+                echo 'password incorrecto';
+            }
         } else {
-          echo 'password incorrecto';
+            echo 'usuario incorrecto';
         }
-      } else {
-        echo 'usuario incorrecto';
-      }
     }
-  }
+}
 ?>
 
 <!DOCTYPE html>
