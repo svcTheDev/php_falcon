@@ -1,10 +1,11 @@
 <?php
 
 session_start();
+
 require_once('db_connection.php');
 
 require_once('all_views/task_managment.php'); 
-
+  
 
 ?>
 
@@ -18,21 +19,30 @@ require_once('all_views/task_managment.php');
 <body>
 
     <?php
-if ($_SESSION) {
+    if (isset($_SESSION['message'])) {
+      echo $_SESSION['message'];
+      // unset($_SESSION['message']);
+    }
+if (isset($_SESSION['username'])) {
     ?>
             <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
             <h1 class="text-center mt-3">
             <?php
-echo $_SESSION['username'] . '👌';
+              echo $_SESSION['username'] . '👌';
     ?>
             </h1>
 
         <section class="container todolist">
             <h1 class="text-center m-3">To-do-list</h1>
                 <?php 
-                  if(!empty($error)) {
-                    echo "<p class='bg-danger text-white'>$error</p>";
-                  }
+                
+                if (isset($_SESSION['error'])) {
+                    echo $_SESSION['error'];
+                    unset($_SESSION['error']);
+                    
+                  } 
+
+                  
                 ?>
                 <!--  echo htmlspecialchars($_SERVER['PHP_SELF']); -->
                 <form class='login-form' action="content.php" method="POST" class="text-center">

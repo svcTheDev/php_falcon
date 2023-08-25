@@ -4,7 +4,7 @@ $db_name = 'to-do-list';
 $username = 'root';
 $password = '';
 
-$conn = mysqli_connect($host, $username, $password, $db_name, '3307');
+$conn = mysqli_connect($host, $username, $password, $db_name);
 
 // Check connection
 if (mysqli_connect_errno()) {
