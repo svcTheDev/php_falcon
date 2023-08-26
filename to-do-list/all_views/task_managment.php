@@ -15,14 +15,22 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
             $statement->bind_param('ssi', $task, $date, $completed);
             $statement->execute();
             
-                    $_SESSION['message'] = "</br> esta es la tarea $task y esta la fecha $date";
+                    $_SESSION['message'] = "</br> esta es la tare $task y esta la fecha $date";
                     // echo "</br> esta es la tarea $task y esta la fecha $date";
+              
+                    $statement = $conn->prepare("SELECT * FROM table_task");
+                    $statement->bind_param('ssi', $task, $date, $completed);
+                    $statement->execute();
+        
+                    $result = $statement->get_result();
                     
-                    // if($conn->affected_rows >= 1) {
-                    //   echo '</br>filas agregadas correctamente: ' . $conn->affected_rows;
-                    // } else {
-                    //   echo 'no se agrego nada';
-                    // } 
+                    if($result->num_rows === 0) {
+                        $_SESSION['message2'] = 'no rows';
+                    } else {
+                        $_SESSION['message2'] = 'correct';
+                    }
+
+                    // fetchTask($conn, $task, $date, $completed);
                     header("Location: content.php");          
                     die();
         }
@@ -44,6 +52,20 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
               $data = filter_var($data, FILTER_SANITIZE_STRING);
               return $data;
           }
+
+        //   function fetchTask($conn, $task, $date, $completed) {
+        //     $statement = $conn->prepare("SELECT * FROM table_task");
+        //     $statement->bind_param('ssi', $task, $date, $completed);
+        //     $statement->execute();
+
+        //     $result = $statement->get_result();
+            
+        //     if($result->num_rows === 0) {
+        //         $_SESSION['message'] = 'no rows';
+        //     } else {
+        //         $_SESSION['message'] = 'correct';
+        //     }
+        //   }
     
 
 

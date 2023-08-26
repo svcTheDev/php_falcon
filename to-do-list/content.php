@@ -21,11 +21,11 @@ require_once('all_views/task_managment.php');
     <?php
     if (isset($_SESSION['message'])) {
       echo $_SESSION['message'];
-      // unset($_SESSION['message']);
+      unset($_SESSION['message']);
     }
 if (isset($_SESSION['username'])) {
     ?>
-            <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
+            <h1 class="text-center pt-3"> Ahora tienes acceso a la págin</h1>
             <h1 class="text-center mt-3">
             <?php
               echo $_SESSION['username'] . '👌';
@@ -80,6 +80,12 @@ if (isset($_SESSION['username'])) {
               </tbody>
             </table>
                   </div>
+                  <?php 
+                    if (isset($_SESSION['message2'])) {
+                      echo $_SESSION['message2'];
+                      unset($_SESSION['message']);
+                    }
+                  ?>
         </section>
 
         <p class="text-white text-center mt-3">
