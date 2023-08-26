@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <h1 class="text-white text-center mt-3">
-           Inicia sesión 🙂
+           Inici sesión 🙂
 </h1>
 <form class='login-form' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
   <div class="flex-row">
