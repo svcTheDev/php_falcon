@@ -21,7 +21,7 @@ require_once('all_views/task_managment.php');
     <?php
     if (isset($_SESSION['message'])) {
       echo $_SESSION['message'];
-      // unset($_SESSION['message']);
+      unset($_SESSION['message']);
     }
 if (isset($_SESSION['username'])) {
     ?>
@@ -41,6 +41,11 @@ if (isset($_SESSION['username'])) {
                     unset($_SESSION['error']);
                     
                   } 
+
+                // if (isset($_SESSION['taskFromTable'])) {
+                //   echo $_SESSION['taskFromTable'];
+                //   unset($_SESSION['taskFromTable']);
+                // }
 
                   
                 ?>
@@ -62,13 +67,42 @@ if (isset($_SESSION['username'])) {
                 </tr>
               </thead>
               <tbody>
+
+                <?php 
+                  if(isset($_SESSION['rows'])) {
+                    $theRows = $_SESSION['rows'];
+                    // print_r($_SESSION['rows']);
+                    foreach ($_SESSION['rows'] as $row) {
+                ?>
                 <tr>
-                  <td>Terminar proyecto</td>
                   <td>
-                    21/08/2023
+                      <?php 
+                      echo $row['task_name'];
+                      ?>
+                  </td>
+                  <td>
+                    <?php 
+                      echo $row['due_date'];
+                    ?>
                 </td>
-                  <td>Completado</td>
                   <td>
+                      <?php 
+                      echo $row['completed'];
+                      ?>
+                  </td>
+                  <td>
+                  <?php 
+                    }
+                    // unset($_SESSION['rows']);
+
+                  } else {
+                    echo 'no tasks ';
+
+                  }
+                  ?>
+
+
+
                     <button class="btn btn-danger" ng-click="delete($index)">
                       Delete
                     </button>
