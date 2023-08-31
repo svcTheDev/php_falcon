@@ -23,6 +23,7 @@ require_once('all_views/task_managment.php');
       echo $_SESSION['message'];
       unset($_SESSION['message']);
     }
+    
 if (isset($_SESSION['username'])) {
     ?>
             <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
@@ -89,6 +90,12 @@ if (isset($_SESSION['username'])) {
                       <?php 
                       echo $row['completed'];
                       ?>
+                      <?php 
+                      echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>"
+                      ?>
+                    <button class="btn btn-success">
+                      Finished
+                    </button>
                   </td>
                   <td>
                   <?php 
@@ -100,15 +107,6 @@ if (isset($_SESSION['username'])) {
 
                   }
                   ?>
-
-
-
-                    <button class="btn btn-danger" ng-click="delete($index)">
-                      Delete
-                    </button>
-                    <button class="btn btn-success" ng-click="finished($index)">
-                      Finished
-                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -131,6 +129,6 @@ if (isset($_SESSION['username'])) {
                  </script>";
 }
 ?>
-        <!-- <script src="/js/functions.js"></script> -->
+        <script src="js/functions.js"></script>
 </body>
 </html>

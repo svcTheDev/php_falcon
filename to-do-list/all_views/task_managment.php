@@ -1,9 +1,23 @@
 <?php
 
+getData($conn);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+if (isset($_POST['taskId'])) {
+    $taskId = $_POST['taskId'];
+    var_dump($taskId);
+} else {
+    echo 'no task';
+}
+}
 
 $error = "";
 if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'])) {
     
+    
+
+
     if (!empty($_POST['task']) and !empty($_POST['date'])) {
         $task = test_validation($_POST['task']);
         $date = test_validation($_POST['date']);
@@ -15,24 +29,11 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
             $statement->bind_param('ssi', $task, $date, $completed);
             $statement->execute();
             
-                    $_SESSION['message'] = "</br> esta es la tarea $task y esta la fecha $date";
-                    // echo "</br> esta es la tarea $task y esta la fecha $date";
-                    
-                    // if($conn->affected_rows >= 1) {
-                    //   echo '</br>filas agregadas correctamente: ' . $conn->affected_rows;
-                    // } else {
-                    //   echo 'no se agrego nada';
-                    // } 
-
-    
-            $statement2 = $conn->prepare('SELECT * FROM table_task');
-            // $completed = 1;
-            // $statement2->bind_param('ssi', $task, $date, $completed);
-            $statement2->execute();
-            $result = $statement2->get_result();
-            $rows = $result->fetch_all(MYSQLI_ASSOC);
-
-            $_SESSION['rows'] = $rows;
+            $_SESSION['message'] = "</br> esta es la tarea $task y esta la fecha $date";
+            
+            
+            getData($conn);
+           
 
     
             header("Location: content.php");          
@@ -57,9 +58,18 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
               return $data;
           }
     
+          function getData ($conn) {
+            $statement2 = $conn->prepare('SELECT * FROM table_task');
+            // $completed = 1;
+            // $statement2->bind_param('ssi', $task, $date, $completed);
+            $statement2->execute();
+            $result = $statement2->get_result();
+            $rows = $result->fetch_all(MYSQLI_ASSOC);
 
+            $_SESSION['rows'] = $rows;
+          }
     
-
+          
         
 
     // $results = $conn->query("SELECT * FROM table_task");
