@@ -1,18 +1,19 @@
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    getData($conn);
-}
+getData($conn);
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// }
 
 $error = "";
 if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'])) {
 
     if (!empty($_POST['task']) and !empty($_POST['date'])) {
-        $task = test_validation($_POST['task']);
-        $date = test_validation($_POST['date']);
+        $task = data_validation($_POST['task']);
+        $date = data_validation($_POST['date']);
         if (!preg_match("/^[a-zA-Z' :\-\d]*$/", $task) or !preg_match("/^[a-zA-Z' :\-\d]*$/", $date)) {
             $error = "Campo inválido : Solo letras y espacios en blanco permitidos";
         } else {
+            // Add Task
             $statement = $conn->prepare("INSERT INTO table_task (task_name, due_date, task_status) VALUES (?, ?, ?)");
             $task_status = 1;
             $statement->bind_param('ssi', $task, $date, $task_status);
@@ -34,7 +35,7 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
     }
 }
 
-function test_validation($data)
+function data_validation($data)
 {
     $data = trim($data);
     $data = htmlspecialchars($data);
@@ -44,6 +45,7 @@ function test_validation($data)
     return $data;
 }
 
+// Shows tasks
 function getData($conn)
 {
     $statement2 = $conn->prepare('SELECT * FROM table_task');
@@ -56,6 +58,7 @@ function getData($conn)
     $_SESSION['rows'] = $rows;
 }
 
+// Delete task
 if (isset($_GET["taskId"])) {
     $statement = $conn->prepare("DELETE FROM table_task WHERE id=?");
     $statement->bind_param("s", $_GET['taskId']);
@@ -63,6 +66,8 @@ if (isset($_GET["taskId"])) {
     getData($conn);
 
 }
+
+// Update task
 if (isset($_GET["taskStatus"]) and isset($_GET["keyStatus"])) {
     
     if (intval($_GET["taskStatus"]) === 1) {
