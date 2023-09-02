@@ -23,6 +23,7 @@ require_once('all_views/task_managment.php');
       echo $_SESSION['message'];
       unset($_SESSION['message']);
     }
+    
 if (isset($_SESSION['username'])) {
     ?>
             <h1 class="text-center pt-3"> Ahora tienes acceso a la págin</h1>
@@ -41,6 +42,11 @@ if (isset($_SESSION['username'])) {
                     unset($_SESSION['error']);
                     
                   } 
+
+                // if (isset($_SESSION['taskFromTable'])) {
+                //   echo $_SESSION['taskFromTable'];
+                //   unset($_SESSION['taskFromTable']);
+                // }
 
                   
                 ?>
@@ -61,24 +67,60 @@ if (isset($_SESSION['username'])) {
                   <th>Estado</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>Terminar proyecto</td>
+              <tbody >
+
+                <?php 
+                  if(isset($_SESSION['rows'])) {
+                    $theRows = $_SESSION['rows'];
+                    // print_r($_SESSION['rows']);
+                    foreach ($_SESSION['rows'] as $row) {
+                ?>
+                <tr >
+                  <td class="bg-danger">
+                      <?php 
+                      echo $row['task_name'];
+                      ?>
+                  </td>
                   <td>
-                    21/08/2023
+                    <?php 
+                      echo $row['due_date'];
+                    ?>
                 </td>
-                  <td>Completado</td>
                   <td>
-                    <button class="btn btn-danger" ng-click="delete($index)">
-                      Delete
-                    </button>
-                    <button class="btn btn-success" ng-click="finished($index)">
-                      Finished
-                    </button>
+                      <a class='delete btn btn-danger' href='?taskId=<?php echo $row['id'] ?>'>Borrar</a>
+                       
+                    <!-- echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>" -->
+                    <a class='btn btn-success' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>Incompleta</a>
+                  </td>
+                  <td>
+                  <?php 
+                     if (isset($_SESSION['com'])) {
+                      echo $_SESSION['com'];
+                      unset($_SESSION['com']);
+                    }
+                     if (isset($_SESSION['com2'])) {
+                      echo $_SESSION['com2'];
+                      unset($_SESSION['com2']);
+                    }
+                
+                    }
+                    // unset($_SESSION['rows']);
+
+                  } else {
+                    echo 'no tasks ';
+
+                  }
+                  ?>
                   </td>
                 </tr>
               </tbody>
             </table>
+                  <?php 
+                       if (isset($_SESSION['test'])) {
+                        echo $_SESSION['test'];
+                        unset($_SESSION['test']);
+                      }
+                  ?>
                   </div>
                   <?php 
                     if (isset($_SESSION['message2'])) {
@@ -103,6 +145,6 @@ if (isset($_SESSION['username'])) {
                  </script>";
 }
 ?>
-        <!-- <script src="/js/functions.js"></script> -->
+        <script src="js/functions.js"></script>
 </body>
 </html>
