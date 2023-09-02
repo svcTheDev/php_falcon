@@ -67,7 +67,7 @@ if (isset($_SESSION['username'])) {
                   <th>Estado</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody >
 
                 <?php 
                   if(isset($_SESSION['rows'])) {
@@ -75,8 +75,8 @@ if (isset($_SESSION['username'])) {
                     // print_r($_SESSION['rows']);
                     foreach ($_SESSION['rows'] as $row) {
                 ?>
-                <tr>
-                  <td>
+                <tr >
+                  <td class="bg-danger">
                       <?php 
                       echo $row['task_name'];
                       ?>
@@ -87,18 +87,22 @@ if (isset($_SESSION['username'])) {
                     ?>
                 </td>
                   <td>
-                      <?php 
-                      echo $row['completed'];
-                      ?>
-                      <?php 
-                      echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>"
-                      ?>
-                    <button class="btn btn-success">
-                      Finished
-                    </button>
+                      <a class='delete btn btn-danger' href='?taskId=<?php echo $row['id'] ?>'>Borrar</a>
+                       
+                    <!-- echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>" -->
+                    <a class='btn btn-success' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>Incompleta</a>
                   </td>
                   <td>
                   <?php 
+                     if (isset($_SESSION['com'])) {
+                      echo $_SESSION['com'];
+                      unset($_SESSION['com']);
+                    }
+                     if (isset($_SESSION['com2'])) {
+                      echo $_SESSION['com2'];
+                      unset($_SESSION['com2']);
+                    }
+                
                     }
                     // unset($_SESSION['rows']);
 
@@ -111,6 +115,12 @@ if (isset($_SESSION['username'])) {
                 </tr>
               </tbody>
             </table>
+                  <?php 
+                       if (isset($_SESSION['test'])) {
+                        echo $_SESSION['test'];
+                        unset($_SESSION['test']);
+                      }
+                  ?>
                   </div>
         </section>
 

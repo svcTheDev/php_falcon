@@ -1,11 +1,10 @@
 
-
 // let deleteButton = document.querySelector('.delete');
 let taskId;
 document.addEventListener('click', getTaskId);
 
 function getTaskId(e){
-    e.preventDefault();
+    // e.preventDefault();
     if(e.target.className.includes('delete')) {
         console.log('hola?');
         taskId = e.target.id;
