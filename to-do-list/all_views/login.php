@@ -4,6 +4,12 @@ session_start();
 
 require_once '../db_connection.php';
 
+if (isset($_GET['registration'])) {
+  $_SESSION['registration_message'] = "<p class='bg-success text-white'>¡Bien Hecho! Usuario creado</p>";
+  header("Location: login.php");
+  exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // collect value of input field
     $name = $_POST['username'];
@@ -21,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $result = $statement->get_result();
 
-        if ($conn->affected_rows >= 0) {
+        if ($conn->affected_rows > 0) {
             // Validando el password
 
             $row = $result->FETCH_ASSOC();
@@ -29,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (password_verify($pass, $storedPassword)) {
                 header("Location: ../content.php");
-                exit();
+                exit("well done");
 
             } else {
                 echo 'password incorrecto';
@@ -49,8 +55,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../css/custom.css">
 </head>
 <body>
+
+  <?php 
+    if (isset($_SESSION['registration_message'])) {
+      echo $_SESSION['registration_message'];
+      unset($_SESSION['registration_message']);
+    }
+
+?>
 <h1 class="text-white text-center mt-3">
-           Inici sesión 🙂
+           Inicia sesión 🙂
 </h1>
 <form class='login-form' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST">
   <div class="flex-row">

@@ -99,48 +99,6 @@ require_once('all_views/task_managment.php');
                     <a class='delete btn btn-dark' href='?taskId=<?php echo $row['id'] ?>'>Borrar</a>
 
                     <!-- echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>" -->
-<<<<<<< HEAD
-                    <a class='btn btn-success' id="statusgi" href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
-                    <?php 
-                    if (intval($row['task_status']) === 1) {
-                      ?>
-                      Incompleta
-                    <?php 
-                    } else {
-                      ?> 
-                    Completa
-                    <?php 
-                    }
-                    ?>
-                    </a>
-                  </td>
-                  <td>
-                  <?php 
-                     if (isset($_SESSION['com'])) {
-                      echo $_SESSION['com'];
-                      unset($_SESSION['com']);
-                    }
-                     if (isset($_SESSION['com2'])) {
-                      echo $_SESSION['com2'];
-                      unset($_SESSION['com2']);
-                    }
-                
-                    }
-                    // unset($_SESSION['rows']);
-
-                  } else {
-                    echo 'no tasks ';
-
-                  }
-                  ?>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            
-                  </div>
-        </section>
-=======
                     <a class='btn text-white <?php echo $background_status?>' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
                     
                     <?php 
@@ -154,7 +112,6 @@ require_once('all_views/task_managment.php');
                         <?php 
                       }
                         ?>
->>>>>>> fd795e77b445bf70f1c257a9d6aea8b35b3812b5
 
                     </a>
                   </td>

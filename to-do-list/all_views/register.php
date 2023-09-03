@@ -4,33 +4,42 @@ session_start();
 
 require_once('../db_connection.php');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // collect value of input field
+if (isset($_POST['register'])) {
     $new_name = $_POST['new_name'];
     $new_pass = $_POST['new_pass'];
     $repeated_pass = $_POST['repeated_pass'];
 
+    if ($new_pass !== $repeated_pass) {
+      $_SESSION['error'] = "<p class='bg-danger text-white'>Las contraseñas no son iguales</p>";
+      header("Location: register.php");
+      die();
+    }
+
     if (empty($new_name) or empty($new_pass) or empty($repeated_pass)) {
 
-      $_SESSION['message'] = "Field is empty";
+      $_SESSION['error'] = "<p class='bg-danger text-white'>Todos los campos son obligatorios</p>";
+      header("Location: register.php");
+        die();
     } else {
-        $new_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
-
-        $statement = $conn->prepare("SELECT username FROM users WHERE username=? AND password=?");
-        $statement->bind_param("ss", $new_name, $new_pass);
-        $statement->execute();
-
-        $result = $statement->get_result();
-
-        if ($conn->affected_rows > 0) {
-          $_SESSION['error'] = 'user exist';
-        } else {
-          $_SESSION['error'] = "User created";
+      // Verificando si el usuario existe
+      
+      $statement = $conn->prepare("SELECT username FROM users WHERE username=?");
+      $statement->bind_param("s", $new_name);
+      $statement->execute();
+      
+      $result = $statement->get_result();
+      
+      if ($conn->affected_rows > 0) {
+        $_SESSION['error'] = "<p class='bg-danger text-white'>Usuario ya existe</p>";
+        header("Location: register.php");
+        die();
+      } else {
+          $new_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
           $statement = $conn->prepare("INSERT INTO users (username, password)  VALUES (?,?)");
           $statement->bind_param('ss', $new_name, $new_pass);
           $statement->execute();
 
-          header("Location: login.php");
+          header("Location: login.php?registration");
           die();
         }
     }
@@ -78,14 +87,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </label>
     <input id="password" class='lf--input' placeholder='Repetir contraseña' type='password' name="repeated_pass">
   </div>
-  <input class='lf--submit' type='submit' value='REGÍSTRATE'>
+  <input class='lf--submit' type='submit' value='REGÍSTRATE' name="register">
 </form>
- <?php 
- 
+ <?php  
+
  if (isset($_SESSION['error'])) {
   echo $_SESSION['error'];
   unset($_SESSION['error']);
-}
+ }
+
  ?>
 <p class="text-white text-center mt-3">
            ¿Ya tienes una cuenta?
