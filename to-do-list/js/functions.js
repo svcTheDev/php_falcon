@@ -1,27 +1,19 @@
 
-// let deleteButton = document.querySelector('.delete');
+// let statusButton = document.querySelector('#status');
+// console.log(statusButton);
+
+document.addEventListener('click', getTaskId)
 let taskId;
-document.addEventListener('click', getTaskId);
 
 function getTaskId(e){
     // e.preventDefault();
-    if(e.target.className.includes('delete')) {
-        console.log('hola?');
-        taskId = e.target.id;
-                
-        fetch('all_views/task_managment.php', {
-            method: 'POST', 
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `taskId=${taskId}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); 
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+    console.log(e);
+    if(e.target.id.includes('status')) {
+
+        taskId = e.target;
+        taskId = taskId.parentElement.parentElement;
+
+        taskId.classList.add('bg-danger')
+        console.log(taskId);
     }
 }

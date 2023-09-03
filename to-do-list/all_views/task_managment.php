@@ -64,7 +64,6 @@ if (isset($_GET["taskId"])) {
 
 }
 if (isset($_GET["taskStatus"]) and isset($_GET["keyStatus"])) {
-    
     if (intval($_GET["taskStatus"]) === 1) {
         $task_status = 2;
     } else {
