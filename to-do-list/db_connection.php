@@ -14,6 +14,19 @@ if (mysqli_connect_errno()) {
   exit();
 }
 
+
+/* <?php 
+if (intval($row['task_status'] === 1)) {
+  ?>
+  bg-danger
+<?php 
+} else {
+?>
+  bg-success
+<?php
+}
+?> */
+
   
 
 ?>

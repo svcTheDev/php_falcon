@@ -12,26 +12,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($new_name) or empty($new_pass) or empty($repeated_pass)) {
 
-        echo "Field is empty";
+      $_SESSION['message'] = "Field is empty";
     } else {
         $new_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
-        $statement = $conn->prepare("SELECT username FROM users WHERE (username, password) = (:name, :password)");
-        $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
-        $statement->execute(array(':name' => $new_name, ':password' => $new_pass));
 
-        $rowCount = $statement->rowCount();
+        $statement = $conn->prepare("SELECT username FROM users WHERE username=? AND password=?");
+        $statement->bind_param("ss", $new_name, $new_pass);
+        $statement->execute();
 
-        if ($rowCount > 0) {
-            echo 'user exist';
+        $result = $statement->get_result();
+
+        if ($conn->affected_rows > 0) {
+          $_SESSION['error'] = 'user exist';
         } else {
-            echo "User creted";
-            $statement = $conn->prepare("INSERT INTO users (id, username, password)  VALUES (null, :name, :password)");
-            $result = $statement->setFetchMode(PDO::FETCH_ASSOC);
-            $statement->execute(array(':name' => $new_name, ':password' => $new_pass));
+          $_SESSION['error'] = "User created";
+          $statement = $conn->prepare("INSERT INTO users (username, password)  VALUES (?,?)");
+          $statement->bind_param('ss', $new_name, $new_pass);
+          $statement->execute();
 
-            header("Location: login.php");
-            exit();
-
+          header("Location: login.php");
+          die();
         }
     }
 }
@@ -80,6 +80,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
   <input class='lf--submit' type='submit' value='REGÍSTRATE'>
 </form>
+ <?php 
+ 
+ if (isset($_SESSION['error'])) {
+  echo $_SESSION['error'];
+  unset($_SESSION['error']);
+}
+ ?>
 <p class="text-white text-center mt-3">
            ¿Ya tienes una cuenta?
             <a class="lf--forgot" href="login.php">Inicia sesión</a>
