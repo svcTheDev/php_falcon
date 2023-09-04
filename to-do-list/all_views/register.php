@@ -3,23 +3,21 @@
 session_start();
 
 require_once('../db_connection.php');
+include_once 'functions.php';
+
 
 if (isset($_POST['register'])) {
     $new_name = $_POST['new_name'];
     $new_pass = $_POST['new_pass'];
     $repeated_pass = $_POST['repeated_pass'];
-
+    
     if ($new_pass !== $repeated_pass) {
-      $_SESSION['error'] = "<p class='bg-danger text-white'>Las contraseñas no son iguales</p>";
-      header("Location: register.php");
-      die();
+      show_message('Las contraseñas no son iguales', 'danger', 'register');
     }
 
     if (empty($new_name) or empty($new_pass) or empty($repeated_pass)) {
-
-      $_SESSION['error'] = "<p class='bg-danger text-white'>Todos los campos son obligatorios</p>";
-      header("Location: register.php");
-        die();
+        show_message('Todos los campos son obligatorios', 'danger', 'register');
+    
     } else {
       // Verificando si el usuario existe
       
@@ -30,9 +28,8 @@ if (isset($_POST['register'])) {
       $result = $statement->get_result();
       
       if ($conn->affected_rows > 0) {
-        $_SESSION['error'] = "<p class='bg-danger text-white'>Usuario ya existe</p>";
-        header("Location: register.php");
-        die();
+        show_message('Usuario ya existe', 'danger', 'register');
+    
       } else {
           $new_pass = password_hash($_POST['new_pass'], PASSWORD_DEFAULT);
           $statement = $conn->prepare("INSERT INTO users (username, password)  VALUES (?,?)");

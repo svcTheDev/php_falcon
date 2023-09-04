@@ -2,10 +2,9 @@
 
 session_start();
 
-require_once('db_connection.php');
+require_once 'db_connection.php';
 
-require_once('all_views/task_managment.php');
-
+require_once 'all_views/task_managment.php';
 
 ?>
 
@@ -21,36 +20,27 @@ require_once('all_views/task_managment.php');
 <body>
 
   <?php
-  if (isset($_SESSION['message'])) {
-    echo $_SESSION['message'];
-    unset($_SESSION['message']);
-  }
+// Tu console.log
+if (isset($_SESSION['console'])) {
+    echo $_SESSION['console'];
+    unset($_SESSION['console']);
+}
 
-  if (isset($_SESSION['username'])) {
-  ?>
+// Mensaje bienvenida
+if (isset($_SESSION['username'])) {
+    ?>
     <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
-    <h1 class="text-center mt-3">
-      <?php
-      echo $_SESSION['username'] . '👌';
-      ?>
-    </h1>
+    <h1 class="text-center mt-3"><?php echo $_SESSION['username'] . '👌'; ?></h1>
 
     <section class="container todolist">
       <h1 class="text-center m-3">To-do-list</h1>
       <?php
 
-      if (isset($_SESSION['error'])) {
+    if (isset($_SESSION['error'])) {
         echo $_SESSION['error'];
         unset($_SESSION['error']);
-      }
-
-      // if (isset($_SESSION['taskFromTable'])) {
-      //   echo $_SESSION['taskFromTable'];
-      //   unset($_SESSION['taskFromTable']);
-      // }
-
-
-      ?>
+    }
+    ?>
       <!--  echo htmlspecialchars($_SERVER['PHP_SELF']); -->
       <form class='login-form' action="content.php" method="POST" class="text-center">
         <input type="text" name="task" id="task" placeholder="Escribe tu tarea" class="p-2">
@@ -71,77 +61,80 @@ require_once('all_views/task_managment.php');
           <tbody>
             <?php
 
-            if (isset($_SESSION['rows'])) {
-              $theRows = $_SESSION['rows'];
-              // print_r($_SESSION['rows']);
-              foreach ($_SESSION['rows'] as $row) {
+    if ($_SESSION['rows']) {
+        foreach ($_SESSION['rows'] as $row) {
             ?>
 
             <?php
-                if (intval($row['task_status'] === 1)) {
-                  $background_status = 'bg-danger';
-                } else {
-                  $background_status = 'bg-success';
-                }
-                ?>
+    if (intval($row['task_status'] === 1)) {
+                $background_status = 'bg-danger';
+            } else {
+                $background_status = 'bg-success';
+            }
+            ?>
                 <tr>
-                  <td class="<?php echo $background_status?> text-center">
+                  <td class="<?php echo $background_status ?> text-center">
                     <?php
-                    echo $row['task_name'];
-                    ?>
+    echo $row['task_name'];
+            ?>
                   </td>
-                  <td class="<?php echo $background_status?>">
+                  <td class="<?php echo $background_status ?>">
                     <?php
-                    echo $row['due_date'];
-                    ?>
+    echo $row['due_date'];
+            ?>
                   </td>
                   <td class="transparent">
                     <a class='delete btn btn-dark' href='?taskId=<?php echo $row['id'] ?>'>Borrar</a>
 
                     <!-- echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>" -->
-                    <a class='btn text-white <?php echo $background_status?>' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
-                    
-                    <?php 
-                      if(intval($row['task_status'] === 1)) {
-                        ?>
-                        Incompleta
-                        <?php 
-                      } else {
-                        ?>
-                        Completa
-                        <?php 
-                      }
-                        ?>
+                    <a class='btn text-white <?php echo $background_status ?>' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
+
+                    <?php
+                        if (intval($row['task_status'] === 1)) {
+                    ?>
+                          Incompleta
+                    <?php
+                        } else {
+                    ?>
+                          Completa
+                    <?php
+                        }
+                    ?>
 
                     </a>
                   </td>
                 <?php
-              }
-              // unset($_SESSION['rows']);
+    }
+    } else {
+            ?>
+              <tr>
+                <td>No hay tareas</td>
+                <td>0</td>
+                <td>0</td>
+                
+              </tr>
+            <?php
+    }
 
-            } else {
-              echo 'no tasks ';
-            }
-                ?>
-                </tr>
+            ?>
           </tbody>
         </table>
-    </section>
 
-    <p class="text-white text-center mt-3">
-      ¿Ya te vas?
-      <a href="all_views/destroy.php" class="lf--forgot">
-        Salir de la página</a>
-    </p>
+            <p class="text-white text-center mt-3 pb-4 mb-0">
+              ¿Ya te vas?
+              <a href="all_views/destroy.php" class="lf--forgot">
+                Salir de la página</a>
+            </p>
+    </section>
   <?php
-  } else {
+} else {
     echo "<script>
                     alert('No has iniciado sessión')
                     window.location.href = 'all_views/login.php';
                  </script>";
-  }
-  ?>
-  <script src="js/functions.js"></script>
+}
+?>
+  <!-- <script src="js/functions.js"></script> -->
 </body>
 
 </html>

@@ -3,11 +3,10 @@
 session_start();
 
 require_once '../db_connection.php';
+include_once 'functions.php';
 
 if (isset($_GET['registration'])) {
-  $_SESSION['registration_message'] = "<p class='bg-success text-white'>¡Bien Hecho! Usuario creado</p>";
-  header("Location: login.php");
-  exit();
+    show_message('¡Bien Hecho! Usuario creado', 'success', 'login');
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['password'] = $pass;
 
     if (empty($name) or empty($pass)) {
-        echo "Field is empty";
+          show_message('Todos los campos son obligatorios', 'danger', 'login');
     } else {
         $statement = $conn->prepare("SELECT password FROM users WHERE username = ?");
         $statement->bind_param('s', $name);
@@ -35,16 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if (password_verify($pass, $storedPassword)) {
                 header("Location: ../content.php");
-                exit("well done");
+                exit();
 
             } else {
-                echo 'password incorrecto';
+              show_message('Contraseña inválida', 'danger', 'login');
             }
         } else {
-            echo 'usuario incorrecto';
+            show_message('Usuario no existe', 'danger', 'login');
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -57,9 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
   <?php 
-    if (isset($_SESSION['registration_message'])) {
-      echo $_SESSION['registration_message'];
-      unset($_SESSION['registration_message']);
+    if (isset($_SESSION['error'])) {
+      echo $_SESSION['error'];
+      unset($_SESSION['error']);
     }
 
 ?>
