@@ -98,6 +98,7 @@ if (isset($_POST['register'])) {
            ¿Ya tienes una cuenta?
             <a class="lf--forgot" href="login.php">Inicia sesión</a>
         </p>
+        <script src="../js/functions.js"></script>
 
 </body>
 </html>

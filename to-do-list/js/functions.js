@@ -1,19 +1,17 @@
 
-// let statusButton = document.querySelector('#status');
-// console.log(statusButton);
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('keypress', e => {
+        console.log(`User pressed: ${e.key}`);
+        console.log('hi');
+        if (!/^[a-zA-Z0-9 .]+$/.test(e.key)) {
+            e.preventDefault();
+        }
+    
+      });
 
-document.addEventListener('click', getTaskId)
-let taskId;
+      input.addEventListener('paste', e => {
+          e.preventDefault();
+        });
+    });
 
-function getTaskId(e){
-    // e.preventDefault();
-    console.log(e);
-    if(e.target.id.includes('status')) {
 
-        taskId = e.target;
-        taskId = taskId.parentElement.parentElement;
-
-        taskId.classList.add('bg-danger')
-        console.log(taskId);
-    }
-}

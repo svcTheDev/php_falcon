@@ -91,5 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            ¿No tienes una cuenta?
             <a href="register.php" class="lf--forgot" >Regístrate</a>
         </p>
+        <script src="../js/functions.js"></script>
 </body>
 </html>
