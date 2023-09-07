@@ -15,10 +15,10 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
             show_message("Campo inválido : Solo letras y espacios en blanco permitidos", 'danger', 'content');
         } else {
             // Add Task
-            $statement = $conn->prepare("INSERT INTO table_task (task_name, due_date, task_status) VALUES (?, ?, ?)");
+            $statement = $conn->prepare("INSERT INTO table_task (task_name, due_date, task_status, user_id) VALUES (?, ?, ?, ?)");
             $task_status = 1;
-            $statement->bind_param('ssi', $task, $date, $task_status);
-            $statement->execute();
+            $statement->bind_param('ssii', $task, $date, $task_status, $_SESSION['user_id']);
+            $statement->execute();  
 
             getData($conn);
 
@@ -57,7 +57,7 @@ function getData($conn)
 
 // Delete task
 if (isset($_GET["taskId"])) {
-    $statement = $conn->prepare("DELETE FROM table_task WHERE id=?");
+    $statement = $conn->prepare("DELETE FROM table_task WHERE task_id=?");
     $statement->bind_param("s", $_GET['taskId']);
     $statement->execute();
     getData($conn);
@@ -72,7 +72,7 @@ if (isset($_GET["taskStatus"]) and isset($_GET["keyStatus"])) {
         $task_status = 1;
     }
 
-    $statement = $conn->prepare("UPDATE table_task SET task_status=? WHERE id=?");
+    $statement = $conn->prepare("UPDATE table_task SET task_status=? WHERE task_id=?");
     $statement->bind_param("is", $task_status, $_GET['keyStatus']);
     $statement->execute();
 

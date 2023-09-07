@@ -13,8 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // collect value of input field
     $name = $_POST['username'];
     $pass = $_POST['password'];
+    $user_id;
     $_SESSION['username'] = $name;
     $_SESSION['password'] = $pass;
+    $_SESSION['user_id'] = $user_id;
 
     if (empty($name) or empty($pass)) {
           show_message('Todos los campos son obligatorios', 'danger', 'login');

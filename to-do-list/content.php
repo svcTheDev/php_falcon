@@ -6,6 +6,8 @@ require_once 'db_connection.php';
 
 require_once 'all_views/task_managment.php';
 
+$_SESSION['console'] = $_SESSION['user_id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +32,7 @@ if (isset($_SESSION['console'])) {
 if (isset($_SESSION['username'])) {
     ?>
     <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
-    <h1 class="text-center mt-3"><?php echo $_SESSION['username'] . '👌'; ?></h1>
+    <h1 class="text-center mt-3"><?php echo $_SESSION['user_id'] . '👌'; ?></h1>
 
     <section class="container todolist">
       <h1 class="text-center m-3">To-do-list</h1>
@@ -84,10 +86,10 @@ if (isset($_SESSION['username'])) {
             ?>
                   </td>
                   <td class="transparent">
-                    <a class='delete btn btn-dark' href='?taskId=<?php echo $row['id'] ?>'>Borrar</a>
+                    <a class='delete btn btn-dark' href='?taskId=<?php echo $row['task_id'] ?>'>Borrar</a>
 
                     <!-- echo "<button class='delete btn btn-danger' id='" . $row['id'] . "'>Delete</button>" -->
-                    <a class='btn text-white <?php echo $background_status ?>' href='?keyStatus=<?php echo $row['id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
+                    <a class='btn text-white <?php echo $background_status ?>' href='?keyStatus=<?php echo $row['task_id'] ?>&taskStatus=<?php echo $row['task_status'] ?>'>
 
                     <?php
                         if (intval($row['task_status'] === 1)) {
