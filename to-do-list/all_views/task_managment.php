@@ -11,13 +11,14 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
     if (!empty($_POST['task']) and !empty($_POST['date'])) {
         $task = data_validation($_POST['task']);
         $date = data_validation($_POST['date']);
-        if (!preg_match("/^[a-zA-Z' :\-\d]*$/", $task) or !preg_match("/^[a-zA-Z' :\-\d]*$/", $date)) {
+        if (!preg_match("/^[a-zA-Z' :\-\d.]*$/", $task) or !preg_match("/^[a-zA-Z' :\-\d]*$/", $date)) {
             show_message("Campo inválido : Solo letras y espacios en blanco permitidos", 'danger', 'content');
         } else {
             // Add Task
             $statement = $conn->prepare("INSERT INTO table_task (task_name, due_date, task_status, user_id) VALUES (?, ?, ?, ?)");
             $task_status = 1;
-            $statement->bind_param('ssii', $task, $date, $task_status, $_SESSION['user_id']);
+            $user_id = $_SESSION['user_id'];
+            $statement->bind_param('ssii', $task, $date, $task_status, $user_id);
             $statement->execute();  
 
             getData($conn);
@@ -43,9 +44,12 @@ function data_validation($data)
 // Shows tasks
 function getData($conn)
 {
-    $statement2 = $conn->prepare('SELECT * FROM table_task');
+    $statement2 = $conn->prepare('SELECT * FROM table_task
+    JOIN users ON table_task.user_id = users.user_id
+    WHERE users.user_id = ?');
     // $task_status = 1;
-    // $statement2->bind_param('ssi', $task, $date, $task_status);
+    $user_id = $_SESSION['user_id'];
+    $statement2->bind_param('i', $user_id);
     $statement2->execute();
     $result = $statement2->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);

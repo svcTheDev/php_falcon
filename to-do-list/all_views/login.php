@@ -16,23 +16,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id;
     $_SESSION['username'] = $name;
     $_SESSION['password'] = $pass;
-    $_SESSION['user_id'] = $user_id;
+
 
     if (empty($name) or empty($pass)) {
           show_message('Todos los campos son obligatorios', 'danger', 'login');
     } else {
-        $statement = $conn->prepare("SELECT password FROM users WHERE username = ?");
+        $statement = $conn->prepare("SELECT password, user_id FROM users WHERE username = ?");
         $statement->bind_param('s', $name);
         $statement->execute();
-        // $result = $statement->fetch(PDO::FETCH_ASSOC);
-
         $result = $statement->get_result();
-
+        
+        
+        // $loginResults = $result->fetch_all(MYSQLI_ASSOC);
+        
         if ($conn->affected_rows > 0) {
-            // Validando el password
+          $row = $result->FETCH_ASSOC();
+          
+          // Obtaining the id
+            $_SESSION['user_id'] = $row['user_id'];
 
-            $row = $result->FETCH_ASSOC();
+          // Validando el password
             $storedPassword = $row['password'];
+
+       
 
             if (password_verify($pass, $storedPassword)) {
                 header("Location: ../content.php");

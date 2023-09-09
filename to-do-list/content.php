@@ -32,7 +32,7 @@ if (isset($_SESSION['console'])) {
 if (isset($_SESSION['username'])) {
     ?>
     <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
-    <h1 class="text-center mt-3"><?php echo $_SESSION['user_id'] . '👌'; ?></h1>
+    <h1 class="text-center mt-3"><?php echo $_SESSION['username'] . '👌'; ?></h1>
 
     <section class="container todolist">
       <h1 class="text-center m-3">To-do-list</h1>
