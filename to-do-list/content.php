@@ -29,10 +29,10 @@ if (isset($_SESSION['console'])) {
 }
 
 // Mensaje bienvenida
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['email'])) {
     ?>
     <h1 class="text-center pt-3"> Ahora tienes acceso a la página</h1>
-    <h1 class="text-center mt-3"><?php echo $_SESSION['username'] . '👌'; ?></h1>
+    <h1 class="text-center mt-3"><?php echo $_SESSION['email'] . '👌'; ?></h1>
 
     <section class="container todolist">
       <h1 class="text-center m-3">To-do-list</h1>

@@ -31,16 +31,6 @@ if (isset($_POST["save_submit"]) && isset($_POST['task']) && isset($_POST['date'
     }
 }
 
-function data_validation($data)
-{
-    $data = trim($data);
-    $data = htmlspecialchars($data);
-    $data = stripslashes($data);
-
-    $data = filter_var($data, FILTER_SANITIZE_STRING);
-    return $data;
-}
-
 // Shows tasks
 function getData($conn)
 {
